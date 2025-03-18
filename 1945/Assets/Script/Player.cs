@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class Player : MonoBehaviour
     public float gValue = 0;
     public int power = 0;
     [SerializeField] private GameObject powerup; //private 인스펙터에서 사용하는 방법 
+    public Image Gage;
     void Start()
     {
         ani = GetComponent<Animator>();
@@ -55,32 +58,19 @@ public class Player : MonoBehaviour
         {
             Instantiate(bullet[power], pos.position, Quaternion.identity);
         }
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            if (Lazer1 == null) // 기존에 존재하는 Lazer가 없을 때만 생성
-            {
-                Lazer1 = Instantiate(Lazer, pos.position, Quaternion.identity);
-            }
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            if (Lazer1 != null) // 현재 Lazer가 존재하면 삭제
-            {
-                Destroy(Lazer1);
-                Lazer1 = null; // 변수 초기화
-            }
-        }
-        /*if (Input.GetKey(KeyCode.LeftControl))
+
+        if (Input.GetKey(KeyCode.LeftControl))
         {
             gValue += Time.deltaTime;
-            if(gValue >= 0.1)
+            Gage.fillAmount = gValue;
+            if(gValue >= 1)
             {
                 GameObject go = Instantiate(Lazer, pos.position, Quaternion.identity);
                 Destroy(go, 3);
-                gValue = 0;
+                gValue = 1;
             }
             
-        }*/
+        }
         else
         {
             gValue -= Time.deltaTime;
@@ -88,6 +78,7 @@ public class Player : MonoBehaviour
             {
                 gValue = 0;
             }
+            Gage.fillAmount = gValue;
         }
 
 
